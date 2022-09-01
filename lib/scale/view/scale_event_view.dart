@@ -41,17 +41,26 @@ class ScaleEventView extends StatelessWidget {
       //
       double left;
       double right;
-      if (len == 1) {
-        left = 0;
-        right = 0;
-      } else if (len == max) {
+      if (len == max) {
         left = width / max * index;
         right = width / max * (max - index - 1);
       } else {
-        int diff = max - len;
-        print('title = ${element.title}, diff = $diff, index = $index -> ${index % diff}');
+        // int diff = max - len;
+        // left = width / max * (index + (index ~/ diff));
+        // if (index + 1 == len) {
+        //   right = 0;
+        // } else {
+        //   right = width / max * (max - ((index ~/ diff) + 1) - index - 1);
+        // }
+        // debugPrint('diff = $diff, index = $index');
+        // debugPrint('left = $left, right = $right');
+        //
         left = width / max * index;
-        right = width / max * (max - index - 1);
+        if (index + 1 == len) {
+          right = 0;
+        } else {
+          right = width / max * (max - index - 1);
+        }
       }
       list.add(Positioned(
         child: Container(
