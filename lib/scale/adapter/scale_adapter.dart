@@ -5,63 +5,90 @@ import 'package:shard/scale/wrap/scale_wrap.dart';
 class ScaleAdapter {
   final double itemHeight;
   final List<ScaleWrap> _list = [];
-  final LinkedHashMap<String, int> _map = LinkedHashMap();
+  final LinkedHashMap<int, List<ScaleWrap?>> _hashMap = LinkedHashMap();
 
   ScaleAdapter(this.itemHeight);
 
   void add(ScaleWrap scaleWrap) {
     DateTime sdt = scaleWrap.getSdt;
-    DateTime edt = scaleWrap.getEdt;
+    // DateTime edt = scaleWrap.getEdt;
     //
-    record(sdt, edt);
-    //
-    var len = _list.length;
-    if (len >= 1) {
-      for (int i = len - 1; i >= 0; i--) {
-        var item = _list[i];
-        var s = item.getSdt;
-        var e = item.getEdt;
-        // print('sdt = $sdt, s = $s');
-        // print('sdt.compareTo(s) = ${sdt.compareTo(s)}');
-        if (sdt.compareTo(s) >= 0 && sdt.compareTo(e) <= 0) {
-          if (convertToKey(sdt.hour) == convertToKey(s.hour)) {
-            if (sdt.compareTo(s) <= 0 && edt.compareTo(e) >= 0 && scaleWrap.differenceInHours() > item.differenceInHours()) {
-              scaleWrap.index = item.index;
-              item.index++;
+    var hour = sdt.hour;
+    var prevKey = hour - 1;
+    List<ScaleWrap?>? prevValue = _hashMap[prevKey];
+    var currentKey = hour;
+    List<ScaleWrap?>? currentValue = _hashMap[currentKey];
+    if (prevValue == null) {
+      if (currentValue == null) {
+        scaleWrap.index = 0;
+        _put(currentKey, scaleWrap);
+      } else {
+        scaleWrap.index = currentValue.length;
+        _put(currentKey, scaleWrap);
+      }
+    } else {
+      int prevLen = prevValue.length;
+      int currentLen = currentValue?.length ?? 0;
+      if (prevLen <= currentLen) {
+        if (currentValue == null) {
+          scaleWrap.index = 0;
+          _put(currentKey, scaleWrap);
+        } else {
+          scaleWrap.index = currentValue.length;
+          _put(currentKey, scaleWrap);
+        }
+      } else {
+        bool isFind = false;
+        for (int i = currentLen; i < prevLen; i++) {
+          ScaleWrap? item = prevValue[i];
+          if (item == null || sdt.compareTo(item.getEdt) >= 0) {
+            if (currentValue == null) {
+              scaleWrap.index = 0;
+              _put(currentKey, scaleWrap);
             } else {
-              scaleWrap.index = item.index + 1;
-              break;
+              scaleWrap.index = currentValue.length;
+              _put(currentKey, scaleWrap);
             }
-          } else {
-            scaleWrap.index = checked(sdt, edt) - 1;
+            isFind = true;
             break;
+          } else {
+            if (currentValue == null) {
+              scaleWrap.index = 0;
+              _hashMap[currentKey] = [null];
+            } else {
+              scaleWrap.index = prevValue.length;
+              currentValue.add(null);
+            }
           }
+        }
+        if (!isFind) {
+          _put(currentKey, scaleWrap);
         }
       }
     }
+    //
     _list.add(scaleWrap);
   }
 
-  void record(DateTime sdt, DateTime? edt) {
-    int hour = sdt.hour;
-    if (edt == null) {
-      var key = convertToKey(hour);
-      int? value = _map[key];
-      if (value == null) {
-        _map[key] = 1;
-      } else {
-        _map[key] = value + 1;
+  void _put(int key, ScaleWrap value) {
+    int hour = value.getSdt.hour;
+    int diff = value.differenceInHours();
+    if (diff > 1) {
+      for (int i = 0; i < diff; i++) {
+        int key = hour + i;
+        List<ScaleWrap?>? list = _hashMap[key];
+        if (list == null) {
+          _hashMap[key] = [value];
+        } else {
+          list.add(value);
+        }
       }
     } else {
-      int hours = edt.difference(sdt).inHours;
-      for (int i = 0; i < hours; i++) {
-        var key = convertToKey(hour + i);
-        int? value = _map[key];
-        if (value == null) {
-          _map[key] = 1;
-        } else {
-          _map[key] = value + 1;
-        }
+      List<ScaleWrap?>? list = _hashMap[key];
+      if (list == null) {
+        _hashMap[key] = [value];
+      } else {
+        list.add(value);
       }
     }
   }
@@ -71,11 +98,12 @@ class ScaleAdapter {
     int hours = edt.difference(sdt).inHours;
     int max = 1;
     for (int i = 0; i < hours; i++) {
-      var key = convertToKey(hour + i);
-      int? value = _map[key];
+      var key = hour + i;
+      List<ScaleWrap?>? value = _hashMap[key];
       if (value == null) continue;
-      if (max < value) {
-        max = value;
+      var length = value.length;
+      if (max < length) {
+        max = length;
       }
     }
     return max;
@@ -83,24 +111,17 @@ class ScaleAdapter {
 
   int max() {
     int max = 1;
-    var values = _map.values;
+    var values = _hashMap.values;
     for (var element in values) {
-      if (max < element) {
-        max = element;
+      var length = element.length;
+      if (max < length) {
+        max = length;
       }
     }
     return max;
   }
 
-  String convertToKey(int hour) {
-    return '$hour:00 - ${hour + 1}:00';
-  }
-
   List<ScaleWrap> toList() => _list;
 
-  void mapToString() {
-    _map.forEach((key, value) {
-      // print('key = $key, value = $value');
-    });
-  }
+  LinkedHashMap<int, List<ScaleWrap?>> toMap() => _hashMap;
 }

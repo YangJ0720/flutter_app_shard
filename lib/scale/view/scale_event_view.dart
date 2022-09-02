@@ -2,13 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shard/scale/adapter/scale_adapter.dart';
+import 'package:shard/show.dart';
 
 class ScaleEventView extends StatelessWidget {
   final ScaleAdapter adapter;
   final double itemWidth;
   final double itemHeight;
 
-  const ScaleEventView(this.adapter, this.itemWidth, this.itemHeight, {Key? key}) : super(key: key);
+  const ScaleEventView(this.adapter, this.itemWidth, this.itemHeight,
+      {Key? key})
+      : super(key: key);
 
   List<Widget> _createDivider() {
     return List.generate(24, (index) {
@@ -21,17 +24,17 @@ class ScaleEventView extends StatelessWidget {
     });
   }
 
-  List<Widget> _createEvent(double width) {
+  List<Widget> _createEvent(BuildContext context, double width) {
     List<Widget> list = [];
-    adapter.mapToString();
     int max = adapter.max();
+    debugPrint('max = $max');
     adapter.toList().forEach((element) {
       var sdt = element.getSdt;
       var h = sdt.hour;
       var m = sdt.minute;
       var edt = element.getEdt;
       var len = adapter.checked(sdt, edt);
-      debugPrint('element = $element -> len = $len');
+      // debugPrint('element = $element -> len = $len');
       var index = element.index;
       var random = Random();
       var r = random.nextInt(256);
@@ -39,40 +42,23 @@ class ScaleEventView extends StatelessWidget {
       var b = random.nextInt(256);
       double opacity = 0.5;
       //
-      double left;
-      double right;
-      if (len == max) {
-        left = width / max * index;
-        right = width / max * (max - index - 1);
-      } else {
-        // int diff = max - len;
-        // left = width / max * (index + (index ~/ diff));
-        // if (index + 1 == len) {
-        //   right = 0;
-        // } else {
-        //   right = width / max * (max - ((index ~/ diff) + 1) - index - 1);
-        // }
-        // debugPrint('diff = $diff, index = $index');
-        // debugPrint('left = $left, right = $right');
-        //
-        left = width / max * index;
-        if (index + 1 == len) {
-          right = 0;
-        } else {
-          right = width / max * (max - index - 1);
-        }
-      }
       list.add(Positioned(
-        child: Container(
-          alignment: Alignment.centerLeft,
-          child: Text(element.title, overflow: TextOverflow.ellipsis),
-          color: Color.fromRGBO(r, g, b, opacity),
-          padding: const EdgeInsets.only(left: 10),
-          height: itemHeight * element.differenceInHours(),
+        child: InkWell(
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: Text(element.title, overflow: TextOverflow.ellipsis),
+            color: Color.fromRGBO(r, g, b, opacity),
+            padding: const EdgeInsets.only(left: 10),
+            width: len > 1 ? width / max : width,
+            height: itemHeight * element.differenceInHours(),
+          ),
+          onTap: () {
+            var route = MaterialPageRoute(builder: (_) => Show(element.title));
+            Navigator.push(context, route);
+          },
         ),
-        left: left,
+        left: width / max * index,
         top: itemHeight / 2 + (h + m / 60) * itemHeight,
-        right: right,
       ));
     });
     return list;
@@ -90,19 +76,25 @@ class ScaleEventView extends StatelessWidget {
     );
   }
 
-  List<Widget> _createListView(double width) {
+  List<Widget> _createListView(BuildContext context, double width) {
     List<Widget> list = [];
     list.addAll(_createDivider());
-    list.addAll(_createEvent(width));
+    list.addAll(_createEvent(context, width));
     list.add(_createCurrentDateTime());
     return list;
   }
 
   @override
   Widget build(BuildContext context) {
+    adapter.toMap().forEach((key, value) {
+      debugPrint('key = $key');
+      for (var element in value) {
+        debugPrint('element = $element');
+      }
+    });
     var width = MediaQuery.of(context).size.width - itemWidth;
     return SizedBox(
-      child: Stack(children: _createListView(width)),
+      child: Stack(children: _createListView(context, width)),
       width: double.infinity,
       height: itemHeight * 24,
     );
