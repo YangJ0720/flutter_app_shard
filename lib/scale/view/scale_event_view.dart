@@ -14,11 +14,21 @@ class ScaleEventView extends StatelessWidget {
       : super(key: key);
 
   List<Widget> _createDivider() {
-    return List.generate(24, (index) {
+    return List.generate(25, (index) {
       return Positioned(
-        child: const Divider(color: Colors.black, height: 1),
+        child: InkWell(
+          child: Container(
+            decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.grey, width: 1)),
+            ),
+            height: itemHeight,
+          ),
+          onTap: () {
+            debugPrint('index = $index');
+          },
+        ),
         left: 0,
-        top: itemHeight * index + itemHeight / 2,
+        top: itemHeight * index,
         right: 0,
       );
     });
@@ -41,7 +51,7 @@ class ScaleEventView extends StatelessWidget {
       var g = random.nextInt(256);
       var b = random.nextInt(256);
       double opacity = 0.5;
-      //
+      // 事件
       list.add(Positioned(
         child: InkWell(
           child: Container(
@@ -58,7 +68,7 @@ class ScaleEventView extends StatelessWidget {
           },
         ),
         left: width / max * index,
-        top: itemHeight / 2 + (h + m / 60) * itemHeight,
+        top: itemHeight / 2 + (h + m / 60) * itemHeight + itemHeight / 2,
       ));
     });
     return list;
@@ -71,9 +81,42 @@ class ScaleEventView extends StatelessWidget {
     return Positioned(
       child: Container(color: Colors.red, height: 2.5),
       left: 0,
-      top: itemHeight / 2 + (h + m / 60) * itemHeight,
+      top: itemHeight / 2 + (h + m / 60) * itemHeight + itemHeight / 2,
       right: 0,
     );
+  }
+
+  List<Widget> _createMore() {
+    List<Widget> list = [];
+    for (int i = 0; i < 24; i++) {
+      int length = adapter.length(i);
+      if (ScaleAdapter.VISIBLE_COUNT < length) {
+        list.add(
+          Positioned(
+            child: InkWell(
+              child: Container(
+                alignment: Alignment.center,
+                child: Text(
+                  '+${length - ScaleAdapter.VISIBLE_COUNT}',
+                  style: const TextStyle(color: Colors.white),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  border: Border.all(color: Colors.grey, width: 1.5),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                width: itemHeight / 2,
+                height: itemHeight / 2,
+              ),
+              onTap: () {},
+            ),
+            top: itemHeight / 2 + i * itemHeight + itemHeight / 2 + itemHeight / 4,
+            right: 5,
+          ),
+        );
+      }
+    }
+    return list;
   }
 
   List<Widget> _createListView(BuildContext context, double width) {
@@ -81,6 +124,7 @@ class ScaleEventView extends StatelessWidget {
     list.addAll(_createDivider());
     list.addAll(_createEvent(context, width));
     list.add(_createCurrentDateTime());
+    list.addAll(_createMore());
     return list;
   }
 
@@ -96,7 +140,7 @@ class ScaleEventView extends StatelessWidget {
     return SizedBox(
       child: Stack(children: _createListView(context, width)),
       width: double.infinity,
-      height: itemHeight * 24,
+      height: itemHeight * 24 + itemHeight,
     );
   }
 }

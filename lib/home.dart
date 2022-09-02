@@ -55,8 +55,9 @@ class _HomeState extends State<Home> {
       ));
       adapter.add(ScaleWrap('去上班2', DateTime(2022, 8, 30, 10), null));
       adapter.add(ScaleWrap('去上班3', DateTime(2022, 8, 30, 10, 10), null));
-      // adapter.add(ScaleWrap('去上班4', DateTime(2022, 8, 30, 10, 20), null));
-      // //
+      adapter.add(ScaleWrap('去上班4', DateTime(2022, 8, 30, 10, 20), null));
+      adapter.add(ScaleWrap('去上班5', DateTime(2022, 8, 30, 10, 30), null));
+      //
       adapter.add(ScaleWrap('喝咖啡1', DateTime(2022, 8, 30, 11), null));
       adapter.add(ScaleWrap('喝咖啡2', DateTime(2022, 8, 30, 11), null));
       // adapter.add(ScaleWrap('喝咖啡3', DateTime(2022, 8, 30, 11, 30), null));

@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:shard/scale/wrap/scale_wrap.dart';
 
 class ScaleAdapter {
+  static const int VISIBLE_COUNT = 5;
   final double itemHeight;
   final List<ScaleWrap> _list = [];
   final LinkedHashMap<int, List<ScaleWrap?>> _hashMap = LinkedHashMap();
@@ -11,7 +12,6 @@ class ScaleAdapter {
 
   void add(ScaleWrap scaleWrap) {
     DateTime sdt = scaleWrap.getSdt;
-    // DateTime edt = scaleWrap.getEdt;
     //
     var hour = sdt.hour;
     var prevKey = hour - 1;
@@ -81,6 +81,9 @@ class ScaleAdapter {
           _hashMap[key] = [value];
         } else {
           list.add(value);
+          if (VISIBLE_COUNT < list.length) {
+            value.isVisible = false;
+          }
         }
       }
     } else {
@@ -89,8 +92,17 @@ class ScaleAdapter {
         _hashMap[key] = [value];
       } else {
         list.add(value);
+        if (VISIBLE_COUNT < list.length) {
+          value.isVisible = false;
+        }
       }
     }
+  }
+
+  int length(int key) {
+    List<ScaleWrap?>? list = _hashMap[key];
+    if (list == null) return 0;
+    return list.where((element) => element != null).length;
   }
 
   int checked(DateTime sdt, DateTime edt) {
@@ -113,7 +125,7 @@ class ScaleAdapter {
     int max = 1;
     var values = _hashMap.values;
     for (var element in values) {
-      var length = element.length;
+      var length = element.where((element) => element?.isVisible == true).length;
       if (max < length) {
         max = length;
       }
@@ -121,7 +133,9 @@ class ScaleAdapter {
     return max;
   }
 
-  List<ScaleWrap> toList() => _list;
+  List<ScaleWrap> toList() {
+    return _list.where((element) => element.isVisible).toList();
+  }
 
   LinkedHashMap<int, List<ScaleWrap?>> toMap() => _hashMap;
 }
