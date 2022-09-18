@@ -3,9 +3,8 @@ class ScaleWrap {
   DateTime sdt;
   DateTime? edt;
   int index;
-  bool isVisible;
 
-  ScaleWrap(this.title, this.sdt, this.edt, {this.index = 0, this.isVisible = true});
+  ScaleWrap(this.title, this.sdt, this.edt, {this.index = 0});
 
   DateTime get getSdt => sdt;
 
@@ -19,6 +18,6 @@ class ScaleWrap {
 
   @override
   String toString() {
-    return 'ScaleWrap{title: $title, sdt: $sdt, edt: $edt, index: $index, isVisible: $isVisible}';
+    return 'ScaleWrap{title: $title, sdt: $sdt, edt: $edt, index: $index}';
   }
 }

@@ -42,8 +42,8 @@ class ScaleEventView extends StatelessWidget {
       var sdt = element.getSdt;
       var h = sdt.hour;
       var m = sdt.minute;
-      var edt = element.getEdt;
-      var len = adapter.checked(sdt, edt);
+      // var edt = element.getEdt;
+      // var len = adapter.checked(sdt, edt);
       // debugPrint('element = $element -> len = $len');
       var index = element.index;
       var random = Random();
@@ -59,7 +59,7 @@ class ScaleEventView extends StatelessWidget {
             child: Text(element.title, overflow: TextOverflow.ellipsis),
             color: Color.fromRGBO(r, g, b, opacity),
             padding: const EdgeInsets.only(left: 10),
-            width: len > 1 ? width / max : width,
+            width: width / max,
             height: itemHeight * element.differenceInHours(),
           ),
           onTap: () {
@@ -86,55 +86,21 @@ class ScaleEventView extends StatelessWidget {
     );
   }
 
-  List<Widget> _createMore() {
-    List<Widget> list = [];
-    for (int i = 0; i < 24; i++) {
-      int length = adapter.length(i);
-      if (ScaleAdapter.VISIBLE_COUNT < length) {
-        list.add(
-          Positioned(
-            child: InkWell(
-              child: Container(
-                alignment: Alignment.center,
-                child: Text(
-                  '+${length - ScaleAdapter.VISIBLE_COUNT}',
-                  style: const TextStyle(color: Colors.white),
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  border: Border.all(color: Colors.grey, width: 1.5),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                width: itemHeight / 2,
-                height: itemHeight / 2,
-              ),
-              onTap: () {},
-            ),
-            top: itemHeight / 2 + i * itemHeight + itemHeight / 2 + itemHeight / 4,
-            right: 5,
-          ),
-        );
-      }
-    }
-    return list;
-  }
-
   List<Widget> _createListView(BuildContext context, double width) {
     List<Widget> list = [];
     list.addAll(_createDivider());
     list.addAll(_createEvent(context, width));
     list.add(_createCurrentDateTime());
-    list.addAll(_createMore());
     return list;
   }
 
   @override
   Widget build(BuildContext context) {
     adapter.toMap().forEach((key, value) {
-      debugPrint('key = $key');
-      for (var element in value) {
-        debugPrint('element = $element');
-      }
+      // debugPrint('key = $key');
+      // for (var element in value) {
+      //   debugPrint('element = $element');
+      // }
     });
     var width = MediaQuery.of(context).size.width - itemWidth;
     return SizedBox(

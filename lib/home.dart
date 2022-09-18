@@ -62,21 +62,27 @@ class _HomeState extends State<Home> {
       adapter.add(ScaleWrap('喝咖啡2', DateTime(2022, 8, 30, 11), null));
       // adapter.add(ScaleWrap('喝咖啡3', DateTime(2022, 8, 30, 11, 30), null));
       //
-      adapter.add(ScaleWrap('吃午餐1', DateTime(2022, 8, 30, 12), null));
-      adapter.add(ScaleWrap(
-        '吃午餐2',
-        DateTime(2022, 8, 30, 12, 30),
-        DateTime(2022, 8, 30, 14, 30),
-      ));
-      adapter.add(ScaleWrap('吃午餐3', DateTime(2022, 8, 30, 12, 30), null));
-      //
-      adapter.add(ScaleWrap('喝奶茶1', DateTime(2022, 8, 30, 15), null));
-      adapter.add(ScaleWrap('喝奶茶2', DateTime(2022, 8, 30, 15, 20), null));
+      // adapter.add(ScaleWrap('吃午餐1', DateTime(2022, 8, 30, 12), null));
+      // adapter.add(ScaleWrap(
+      //   '吃午餐2',
+      //   DateTime(2022, 8, 30, 12, 30),
+      //   DateTime(2022, 8, 30, 14, 30),
+      // ));
+      // adapter.add(ScaleWrap('吃午餐3', DateTime(2022, 8, 30, 12, 30), null));
       // //
-      adapter.add(ScaleWrap('下午茶1', DateTime(2022, 8, 30, 16), null));
-      adapter.add(ScaleWrap('下午茶2', DateTime(2022, 8, 30, 16, 5), null));
+      // adapter.add(ScaleWrap('喝奶茶1', DateTime(2022, 8, 30, 15), null));
+      // adapter.add(ScaleWrap('喝奶茶2', DateTime(2022, 8, 30, 15, 20), null));
+      // //
+      // adapter.add(ScaleWrap('下午茶1', DateTime(2022, 8, 30, 16), null));
+      // adapter.add(ScaleWrap('下午茶2', DateTime(2022, 8, 30, 16, 5), null));
+      // //
+      // adapter.add(ScaleWrap('去打架', DateTime(2022, 8, 30, 18), null));
       //
-      adapter.add(ScaleWrap('去打架', DateTime(2022, 8, 30, 18), null));
+      adapter.add(ScaleWrap('去洗澡1', DateTime(2022, 8, 30, 22), null));
+      adapter.add(ScaleWrap('去洗澡2', DateTime(2022, 8, 30, 22, 10), null));
+      adapter.add(ScaleWrap('去洗澡3', DateTime(2022, 8, 30, 22, 20), null));
+      //
+      adapter.add(ScaleWrap('去睡觉1', DateTime(2022, 8, 30, 23), null));
       _controller.add(adapter);
     });
   }
@@ -90,6 +96,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    double maxHeight = 100;
     return Scaffold(
       appBar: AppBar(
         title: Text(DateTime.now().toIso8601String()),
@@ -100,23 +107,108 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Row(
-          children: [
-            ScaleHourView(_itemWidth, _itemHeight),
-            Expanded(
-              child: StreamBuilder<ScaleAdapter>(
-                builder: (_, snapshot) {
-                  var adapter = snapshot.requireData;
-                  return ScaleEventView(adapter, _itemWidth, _itemHeight);
-                },
-                stream: _controller.stream,
-                initialData: ScaleAdapter(_itemHeight),
+      body: Column(
+        children: [
+          Container(
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: const Text('全天'),
+                    color: Colors.yellow,
+                    constraints: BoxConstraints(
+                      minHeight: _itemHeight,
+                      maxHeight: maxHeight,
+                    ),
+                    width: _itemWidth,
+                  ),
+                  Container(color: Colors.grey, width: 1),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: const [
+                          Text('data'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(color: Colors.grey, width: 1),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(children: const []),
+                    ),
+                  ),
+                  Container(color: Colors.grey, width: 1),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: const [],
+                      ),
+                    ),
+                  ),
+                  Container(color: Colors.grey, width: 1),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: const [],
+                      ),
+                    ),
+                  ),
+                  Container(color: Colors.grey, width: 1),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: const [],
+                      ),
+                    ),
+                  ),
+                  Container(color: Colors.grey, width: 1),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: const [],
+                      ),
+                    ),
+                  ),
+                  Container(color: Colors.grey, width: 1),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: const [],
+                      ),
+                    ),
+                  ),
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-            )
-          ],
-        ),
-        controller: _scrollController,
+            ),
+            constraints: BoxConstraints(maxHeight: maxHeight),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.grey, width: 1),
+              )
+            ),
+          ),
+          Expanded(child: SingleChildScrollView(
+            child: Row(
+              children: [
+                ScaleHourView(_itemWidth, _itemHeight),
+                Expanded(
+                  child: StreamBuilder<ScaleAdapter>(
+                    builder: (_, snapshot) {
+                      var adapter = snapshot.requireData;
+                      return ScaleEventView(adapter, _itemWidth, _itemHeight);
+                    },
+                    stream: _controller.stream,
+                    initialData: ScaleAdapter(_itemHeight),
+                  ),
+                )
+              ],
+            ),
+            controller: _scrollController,
+          )),
+        ],
       ),
     );
   }
