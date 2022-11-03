@@ -13,7 +13,27 @@ class ScaleWrap {
   int differenceInHours() {
     DateTime? e = edt;
     if (e == null) return 1;
-    return e.difference(sdt).inHours;
+    var hours = e.hour - sdt.hour;
+    if (hours <= 0) {
+      // if (e.minute > 0) {
+      //   hours = 2;
+      // } else {
+      //   hours = 1;
+      // }
+      //
+      hours = 1;
+    }
+    return hours;
+  }
+
+  double differenceInHoursToDouble() {
+    DateTime? e = edt;
+    if (e == null) return 1;
+    var hours = ((e.hour * 60 + e.minute) - (sdt.hour * 60 + sdt.minute)) / 60;
+    if (hours < 1) {
+      hours = 1;
+    }
+    return hours;
   }
 
   @override

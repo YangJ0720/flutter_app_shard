@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:shard/scale/wrap/scale_wrap.dart';
 
@@ -113,7 +114,7 @@ class ScaleAdapter {
     var hour = sdt.hour;
     int hours = edt.difference(sdt).inHours;
     int max = 1;
-    for (int i = 0; i < hours; i++) {
+    for (int i = 0; i <= hours; i++) {
       var key = hour + i;
       List<ScaleWrap?>? value = _hashMap[key];
       if (value == null) continue;
@@ -125,7 +126,8 @@ class ScaleAdapter {
     return max;
   }
 
-  int max() {
+  int max(int hour) {
+    int prevMax = _hashMap[hour - 1]?.length ?? 1;
     int max = 1;
     var values = _hashMap.values;
     for (var element in values) {

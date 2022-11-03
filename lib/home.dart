@@ -38,28 +38,28 @@ class _HomeState extends State<Home> {
       _jumpTo();
       //
       ScaleAdapter adapter = ScaleAdapter(_itemHeight);
-      adapter.add(ScaleWrap('起床', DateTime(2022, 8, 30, 6), null));
-      //
-      adapter.add(ScaleWrap(
-        '吃早餐1',
-        DateTime(2022, 8, 30, 8),
-        DateTime(2022, 8, 30, 20),
-      ));
-      adapter.add(ScaleWrap('吃早餐2', DateTime(2022, 8, 30, 8), null));
-      adapter.add(ScaleWrap('吃早餐3', DateTime(2022, 8, 30, 8, 10), null));
-      //
-      adapter.add(ScaleWrap(
-        '去上班1',
-        DateTime(2022, 8, 30, 10),
-        DateTime(2022, 8, 30, 12),
-      ));
-      adapter.add(ScaleWrap('去上班2', DateTime(2022, 8, 30, 10), null));
-      adapter.add(ScaleWrap('去上班3', DateTime(2022, 8, 30, 10, 10), null));
-      adapter.add(ScaleWrap('去上班4', DateTime(2022, 8, 30, 10, 20), null));
-      adapter.add(ScaleWrap('去上班5', DateTime(2022, 8, 30, 10, 30), null));
-      //
-      adapter.add(ScaleWrap('喝咖啡1', DateTime(2022, 8, 30, 11), null));
-      adapter.add(ScaleWrap('喝咖啡2', DateTime(2022, 8, 30, 11), null));
+      // adapter.add(ScaleWrap('起床', DateTime(2022, 8, 30, 6), null));
+      // //
+      // adapter.add(ScaleWrap(
+      //   '吃早餐1',
+      //   DateTime(2022, 8, 30, 8),
+      //   DateTime(2022, 8, 30, 20),
+      // ));
+      // adapter.add(ScaleWrap('吃早餐2', DateTime(2022, 8, 30, 8), null));
+      // adapter.add(ScaleWrap('吃早餐3', DateTime(2022, 8, 30, 8, 10), null));
+      // //
+      // adapter.add(ScaleWrap(
+      //   '去上班1',
+      //   DateTime(2022, 8, 30, 10),
+      //   DateTime(2022, 8, 30, 12),
+      // ));
+      // adapter.add(ScaleWrap('去上班2', DateTime(2022, 8, 30, 10), null));
+      // adapter.add(ScaleWrap('去上班3', DateTime(2022, 8, 30, 10, 10), null));
+      // adapter.add(ScaleWrap('去上班4', DateTime(2022, 8, 30, 10, 20), null));
+      // adapter.add(ScaleWrap('去上班5', DateTime(2022, 8, 30, 10, 30), null));
+      // //
+      // adapter.add(ScaleWrap('喝咖啡1', DateTime(2022, 8, 30, 11), null));
+      // adapter.add(ScaleWrap('喝咖啡2', DateTime(2022, 8, 30, 11), null));
       // adapter.add(ScaleWrap('喝咖啡3', DateTime(2022, 8, 30, 11, 30), null));
       //
       // adapter.add(ScaleWrap('吃午餐1', DateTime(2022, 8, 30, 12), null));
@@ -78,11 +78,22 @@ class _HomeState extends State<Home> {
       // //
       // adapter.add(ScaleWrap('去打架', DateTime(2022, 8, 30, 18), null));
       //
-      adapter.add(ScaleWrap('去洗澡1', DateTime(2022, 8, 30, 22), null));
-      adapter.add(ScaleWrap('去洗澡2', DateTime(2022, 8, 30, 22, 10), null));
-      adapter.add(ScaleWrap('去洗澡3', DateTime(2022, 8, 30, 22, 20), null));
+      // adapter.add(ScaleWrap('去洗澡1', DateTime(2022, 8, 30, 22), null));
+      // adapter.add(ScaleWrap('去洗澡2', DateTime(2022, 8, 30, 22, 10), null));
+      // adapter.add(ScaleWrap('去洗澡3', DateTime(2022, 8, 30, 22, 20), null));
       //
-      adapter.add(ScaleWrap('去睡觉1', DateTime(2022, 8, 30, 23), null));
+      // adapter.add(ScaleWrap('去睡觉1', DateTime(2022, 8, 30, 23), null));
+      //
+      adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 10), DateTime(2022, 8, 30, 10)));
+      adapter.add(ScaleWrap('8', DateTime(2022, 8, 30, 10, 30), DateTime(2022, 8, 30, 10, 30)));
+      adapter.add(ScaleWrap('10', DateTime(2022, 8, 30, 11), null));
+      adapter.add(ScaleWrap('12', DateTime(2022, 8, 30, 14), null));
+      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18), DateTime(2022, 8, 30, 19)));
+      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 1), DateTime(2022, 8, 30, 20, 1)));
+      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 2), DateTime(2022, 8, 30, 20, 2)));
+      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 3), DateTime(2022, 8, 30, 20, 3)));
+      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 10), DateTime(2022, 8, 30, 20, 10)));
+      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 15), DateTime(2022, 8, 30, 20, 15)));
       _controller.add(adapter);
     });
   }

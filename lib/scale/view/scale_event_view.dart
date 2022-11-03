@@ -36,15 +36,14 @@ class ScaleEventView extends StatelessWidget {
 
   List<Widget> _createEvent(BuildContext context, double width) {
     List<Widget> list = [];
-    int max = adapter.max();
-    debugPrint('max = $max');
     adapter.toList().forEach((element) {
       var sdt = element.getSdt;
       var h = sdt.hour;
       var m = sdt.minute;
-      // var edt = element.getEdt;
-      // var len = adapter.checked(sdt, edt);
-      // debugPrint('element = $element -> len = $len');
+      var edt = element.getEdt;
+      var len = adapter.checked(sdt, edt);
+      int max = adapter.max(h);
+      debugPrint('element = $element -> len = $len, max = $max');
       var index = element.index;
       var random = Random();
       var r = random.nextInt(256);
@@ -60,7 +59,7 @@ class ScaleEventView extends StatelessWidget {
             color: Color.fromRGBO(r, g, b, opacity),
             padding: const EdgeInsets.only(left: 10),
             width: width / max,
-            height: itemHeight * element.differenceInHours(),
+            height: itemHeight * element.differenceInHoursToDouble(),
           ),
           onTap: () {
             var route = MaterialPageRoute(builder: (_) => Show(element.title));
@@ -97,10 +96,7 @@ class ScaleEventView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     adapter.toMap().forEach((key, value) {
-      // debugPrint('key = $key');
-      // for (var element in value) {
-      //   debugPrint('element = $element');
-      // }
+      debugPrint('key = $key, value = $value');
     });
     var width = MediaQuery.of(context).size.width - itemWidth;
     return SizedBox(
