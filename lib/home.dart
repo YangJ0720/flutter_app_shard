@@ -84,10 +84,12 @@ class _HomeState extends State<Home> {
       //
       // adapter.add(ScaleWrap('去睡觉1', DateTime(2022, 8, 30, 23), null));
       //
-      adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 10), DateTime(2022, 8, 30, 10)));
-      adapter.add(ScaleWrap('8', DateTime(2022, 8, 30, 10, 30), DateTime(2022, 8, 30, 10, 30)));
-      adapter.add(ScaleWrap('10', DateTime(2022, 8, 30, 11), null));
-      adapter.add(ScaleWrap('12', DateTime(2022, 8, 30, 14), null));
+      adapter.add(ScaleWrap('10:00', DateTime(2022, 8, 30, 10, 0), DateTime(2022, 8, 30, 16, 0)));
+      adapter.add(ScaleWrap('10:30', DateTime(2022, 8, 30, 10, 30), DateTime(2022, 8, 30, 10, 30)));
+      adapter.add(ScaleWrap('10:40', DateTime(2022, 8, 30, 10, 40), DateTime(2022, 8, 30, 10, 40)));
+      // adapter.add(ScaleWrap('11:00', DateTime(2022, 8, 30, 11), null));
+      // adapter.add(ScaleWrap('11:05', DateTime(2022, 8, 30, 11, 5), null));
+      adapter.add(ScaleWrap('14:00', DateTime(2022, 8, 30, 14), null));
       // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18), DateTime(2022, 8, 30, 19)));
       // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 1), DateTime(2022, 8, 30, 20, 1)));
       // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 2), DateTime(2022, 8, 30, 20, 2)));

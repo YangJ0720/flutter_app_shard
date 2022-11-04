@@ -58,7 +58,7 @@ class ScaleEventView extends StatelessWidget {
             child: Text(element.title, overflow: TextOverflow.ellipsis),
             color: Color.fromRGBO(r, g, b, opacity),
             padding: const EdgeInsets.only(left: 10),
-            width: width / max,
+            width: width / len,
             height: itemHeight * element.differenceInHoursToDouble(),
           ),
           onTap: () {
@@ -66,7 +66,7 @@ class ScaleEventView extends StatelessWidget {
             Navigator.push(context, route);
           },
         ),
-        left: width / max * index,
+        left: width / len * index,
         top: itemHeight / 2 + (h + m / 60) * itemHeight + itemHeight / 2,
       ));
     });

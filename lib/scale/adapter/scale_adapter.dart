@@ -43,7 +43,12 @@ class ScaleAdapter {
           ScaleWrap? item = prevValue[i];
           if (item == null || sdt.compareTo(item.getEdt) >= 0) {
             if (currentValue == null) {
-              scaleWrap.index = 0;
+              // 将上一个时间点的数据添加到当前时间点
+              _hashMap[currentKey] = [];
+              _hashMap[currentKey]?.addAll(prevValue);
+              _hashMap[prevKey]?.add(null);
+              //
+              scaleWrap.index = prevLen;
               _put(currentKey, scaleWrap);
             } else {
               scaleWrap.index = i;
@@ -111,8 +116,8 @@ class ScaleAdapter {
   }
 
   int checked(DateTime sdt, DateTime edt) {
-    var hour = sdt.hour;
-    int hours = edt.difference(sdt).inHours;
+    var hour = sdt.hour - 1;
+    int hours = edt.difference(sdt).inHours + 1;
     int max = 1;
     for (int i = 0; i <= hours; i++) {
       var key = hour + i;

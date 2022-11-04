@@ -28,11 +28,16 @@ class ScaleWrap {
 
   double differenceInHoursToDouble() {
     DateTime? e = edt;
-    if (e == null) return 1;
+    if (e == null) return 0.5;
     var hours = ((e.hour * 60 + e.minute) - (sdt.hour * 60 + sdt.minute)) / 60;
-    if (hours < 1) {
-      hours = 1;
+    // if (hours < 1) {
+    //   hours = 1;
+    // }
+    //
+    if (hours < 0.5) {
+      hours = 0.5;
     }
+    //
     return hours;
   }
 
