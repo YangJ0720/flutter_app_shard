@@ -43,7 +43,7 @@ class ScaleEventView extends StatelessWidget {
       var edt = element.getEdt;
       var len = adapter.checked(sdt, edt);
       int max = adapter.max(h);
-      debugPrint('element = $element -> len = $len, max = $max');
+      debugPrint('element = ${element.toJson()} -> len = $len, max = $max');
       var index = element.index;
       var random = Random();
       var r = random.nextInt(256);
@@ -58,8 +58,8 @@ class ScaleEventView extends StatelessWidget {
             child: Text(element.title, overflow: TextOverflow.ellipsis),
             color: Color.fromRGBO(r, g, b, opacity),
             padding: const EdgeInsets.only(left: 10),
-            width: width / len,
-            height: itemHeight * element.differenceInHoursToDouble(),
+            width: element.widthPixels(adapter, width),
+            height: element.heightPixels(itemHeight),
           ),
           onTap: () {
             var route = MaterialPageRoute(builder: (_) => Show(element.title));
@@ -96,7 +96,7 @@ class ScaleEventView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     adapter.toMap().forEach((key, value) {
-      debugPrint('key = $key, value = $value');
+      debugPrint('key = ${key.toString().padLeft(2, '0')}, value = $value');
     });
     var width = MediaQuery.of(context).size.width - itemWidth;
     return SizedBox(

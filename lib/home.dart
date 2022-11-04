@@ -38,6 +38,7 @@ class _HomeState extends State<Home> {
       _jumpTo();
       //
       ScaleAdapter adapter = ScaleAdapter(_itemHeight);
+      adapter.initialize();
       // adapter.add(ScaleWrap('起床', DateTime(2022, 8, 30, 6), null));
       // //
       // adapter.add(ScaleWrap(
@@ -84,12 +85,18 @@ class _HomeState extends State<Home> {
       //
       // adapter.add(ScaleWrap('去睡觉1', DateTime(2022, 8, 30, 23), null));
       //
-      adapter.add(ScaleWrap('10:00', DateTime(2022, 8, 30, 10, 0), DateTime(2022, 8, 30, 16, 0)));
-      adapter.add(ScaleWrap('10:30', DateTime(2022, 8, 30, 10, 30), DateTime(2022, 8, 30, 10, 30)));
-      adapter.add(ScaleWrap('10:40', DateTime(2022, 8, 30, 10, 40), DateTime(2022, 8, 30, 10, 40)));
-      // adapter.add(ScaleWrap('11:00', DateTime(2022, 8, 30, 11), null));
-      // adapter.add(ScaleWrap('11:05', DateTime(2022, 8, 30, 11, 5), null));
-      adapter.add(ScaleWrap('14:00', DateTime(2022, 8, 30, 14), null));
+      adapter.add(ScaleWrap('0800', DateTime(2022, 1, 1, 08, 00), null));
+      adapter.add(ScaleWrap('1000', DateTime(2022, 1, 1, 10, 00), DateTime(2022, 1, 1, 16, 00)));
+      adapter.add(ScaleWrap('1030', DateTime(2022, 1, 1, 10, 30), null));
+      adapter.add(ScaleWrap('1040', DateTime(2022, 1, 1, 10, 40), DateTime(2022, 1, 1, 16, 40)));
+      adapter.add(ScaleWrap('1100', DateTime(2022, 1, 1, 11, 00), null));
+      adapter.add(ScaleWrap('1100', DateTime(2022, 1, 1, 11, 00), null));
+      adapter.add(ScaleWrap('1105', DateTime(2022, 1, 1, 11, 05), null));
+      adapter.add(ScaleWrap('1150', DateTime(2022, 1, 1, 11, 50), null));
+      adapter.add(ScaleWrap('1200', DateTime(2022, 1, 1, 12, 00), null));
+      adapter.add(ScaleWrap('1200', DateTime(2022, 1, 1, 12, 00), DateTime(2022, 1, 1, 16, 50)));
+      adapter.add(ScaleWrap('1400', DateTime(2022, 1, 1, 14, 00), null));
+      // adapter.add(ScaleWrap('18:00', DateTime(2022, 8, 30, 18), DateTime(2022, 8, 30, 19)));
       // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18), DateTime(2022, 8, 30, 19)));
       // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 1), DateTime(2022, 8, 30, 20, 1)));
       // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 2), DateTime(2022, 8, 30, 20, 2)));

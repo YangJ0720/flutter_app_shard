@@ -10,103 +10,108 @@ class ScaleAdapter {
 
   ScaleAdapter(this.itemHeight);
 
+  void initialize() {
+    for (int i = 0; i < 24; i++) {
+      _hashMap[i] = [];
+    }
+  }
+
   void add(ScaleWrap scaleWrap) {
     DateTime sdt = scaleWrap.getSdt;
+    DateTime edt = scaleWrap.getEdt;
     //
-    var hour = sdt.hour;
-    var prevKey = hour - 1;
-    List<ScaleWrap?>? prevValue = _hashMap[prevKey];
-    var currentKey = hour;
-    List<ScaleWrap?>? currentValue = _hashMap[currentKey];
-    if (prevValue == null) {
-      if (currentValue == null) {
-        scaleWrap.index = 0;
-        _put(currentKey, scaleWrap);
-      } else {
-        scaleWrap.index = _length(currentValue);
-        _put(currentKey, scaleWrap);
-      }
-    } else {
-      int prevLen = prevValue.length;
-      int currentLen = _length(currentValue);
-      if (prevLen <= currentLen) {
-        if (currentValue == null) {
-          scaleWrap.index = 0;
-          _put(currentKey, scaleWrap);
-        } else {
-          scaleWrap.index = _length(currentValue);
-          _put(currentKey, scaleWrap);
-        }
-      } else {
-        bool isFind = false;
-        for (int i = currentLen; i < prevLen; i++) {
-          ScaleWrap? item = prevValue[i];
-          if (item == null || sdt.compareTo(item.getEdt) >= 0) {
-            if (currentValue == null) {
-              // 将上一个时间点的数据添加到当前时间点
-              _hashMap[currentKey] = [];
-              _hashMap[currentKey]?.addAll(prevValue);
-              _hashMap[prevKey]?.add(null);
-              //
-              scaleWrap.index = prevLen;
-              _put(currentKey, scaleWrap);
-            } else {
-              scaleWrap.index = i;
-              _put(currentKey, scaleWrap);
-            }
-            isFind = true;
-            break;
+    var sHour = sdt.hour;
+    var eHour = edt.hour;
+    //
+    var value = _hashMap[sHour];
+    if (value == null || value.isEmpty) {
+      // 如果是第一个事件，就可以直接添加
+      if (sHour == eHour) {
+        _hashMap.forEach((key, value) {
+          if (sHour == key) {
+            _hashMap[key] = [scaleWrap];
           } else {
-            if (currentValue == null) {
-              scaleWrap.index = 0;
-              _hashMap[currentKey] = [null];
+            _hashMap[key]?.add(null);
+          }
+        });
+      } else {
+        for (int i = 0; i < 24; i++) {
+          if (sHour <= i && i <= eHour) {
+            var value = _hashMap[i];
+            if (value == null || value.isEmpty) {
+              _hashMap[i] = [scaleWrap];
             } else {
-              scaleWrap.index = prevValue.length;
-              currentValue.add(null);
+              var length = value.length;
+              scaleWrap.index = length;
+              value.add(scaleWrap);
             }
+          } else {
+            _hashMap[i]?.add(null);
           }
         }
-        if (!isFind) {
-          _put(currentKey, scaleWrap);
+      }
+      _list.add(scaleWrap);
+      return;
+    }
+    //
+    if (sHour == eHour) {
+      // 不是第一个事件，需要对这个时段的事件集合进行遍历，查看是否满足插入条件
+      var index = value.indexWhere((element) => element == null);
+      if (index >= 0) {
+        // 找到空隙，直接插入空隙
+        value.removeAt(index);
+        scaleWrap.index = index;
+        value.insert(index, scaleWrap);
+      } else {
+        // 没有找到空隙，插入集合末尾
+        _hashMap.forEach((k, v) {
+          if (k == sHour) {
+            var value = _hashMap[k];
+            if (value == null) {
+              _hashMap[k] = [scaleWrap];
+            } else {
+              scaleWrap.index = value.length;
+              value.add(scaleWrap);
+            }
+          } else {
+            _hashMap[k]?.add(null);
+          }
+        });
+      }
+    } else {
+      var index = value.indexWhere((element) => element == null);
+      if (index >= 0) {
+        // 找到空隙，直接插入空隙
+        for (int i = sHour; i <= eHour; i++) {
+          var value = _hashMap[i];
+          if (value == null || value.isEmpty) {
+            _hashMap[i] = [scaleWrap];
+          } else {
+            value.removeAt(index);
+            scaleWrap.index = index;
+            value.insert(index, scaleWrap);
+          }
+        }
+      } else {
+        // 没有找到空隙，只能在所有集合增加一列，并插入集合末尾
+        for (int i = 0; i < 24; i++) {
+          if (sHour <= i && i <= eHour) {
+            var value = _hashMap[i];
+            if (value == null || value.isEmpty) {
+              _hashMap[i] = [scaleWrap];
+            } else {
+              var length = value.length;
+              scaleWrap.index = length;
+              value.add(scaleWrap);
+            }
+          } else {
+            _hashMap[i]?.add(null);
+          }
         }
       }
     }
     //
     _list.add(scaleWrap);
-  }
-
-  void _put(int key, ScaleWrap value) {
-    int hour = value.getSdt.hour;
-    int diff = value.differenceInHours();
-    if (diff > 1) {
-      for (int i = 0; i < diff; i++) {
-        int key = hour + i;
-        List<ScaleWrap?>? list = _hashMap[key];
-        if (list == null) {
-          _hashMap[key] = [value];
-        } else {
-          list.add(value);
-        }
-      }
-    } else {
-      List<ScaleWrap?>? list = _hashMap[key];
-      if (list == null) {
-        _hashMap[key] = [value];
-      } else {
-        int index = value.index;
-        if (list.length - 1 > index && list[index] == null) {
-          list.removeAt(index);
-          list.insert(index, value);
-        } else {
-          list.add(value);
-        }
-      }
-    }
-  }
-
-  int _length(List<ScaleWrap?>? list) {
-    if (list == null) return 0;
-    return list.where((element) => element != null).length;
   }
 
   int length(int key) {

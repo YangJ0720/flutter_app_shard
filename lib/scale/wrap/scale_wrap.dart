@@ -1,3 +1,5 @@
+import 'package:shard/scale/adapter/scale_adapter.dart';
+
 class ScaleWrap {
   String title;
   DateTime sdt;
@@ -8,7 +10,34 @@ class ScaleWrap {
 
   DateTime get getSdt => sdt;
 
-  DateTime get getEdt => edt ?? sdt.add(const Duration(hours: 1));
+  DateTime get getEdt => edt ?? sdt.add(const Duration(minutes: 30));
+
+  double widthPixels(ScaleAdapter adapter, double width) {
+    var map = adapter.toMap();
+    var key = sdt.hour;
+    var value = map[key] ?? [];
+    var isFull = true;
+    var len = value.length;
+    for (int i = 0; i < len; i++) {
+      var item = value[i];
+      if (index == i) continue;
+      if (item != null) {
+        isFull = false;
+        break;
+      }
+    }
+    if (isFull) return width;
+    return width / len;
+  }
+
+  double heightPixels(double itemHeight) {
+    var e = edt;
+    if (e == null) return itemHeight * 0.5;
+    var s = sdt;
+    var sHour = s.hour + s.minute / 60;
+    var eHour = e.hour + e.minute / 60;
+    return itemHeight * (eHour - sHour);
+  }
 
   int differenceInHours() {
     DateTime? e = edt;
@@ -41,8 +70,12 @@ class ScaleWrap {
     return hours;
   }
 
+  String toJson() {
+    return 'ScaleWrap{title: $title, sdt: $sdt, edt: $edt, index: $index}';
+  }
+
   @override
   String toString() {
-    return 'ScaleWrap{title: $title, sdt: $sdt, edt: $edt, index: $index}';
+    return title;
   }
 }
