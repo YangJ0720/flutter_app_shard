@@ -40,10 +40,15 @@ class ScaleEventView extends StatelessWidget {
       var sdt = element.getSdt;
       var h = sdt.hour;
       var m = sdt.minute;
-      var edt = element.getEdt;
+      var edt = element.getEdt();
       var len = adapter.checked(sdt, edt);
-      int max = adapter.max(h);
-      debugPrint('element = ${element.toJson()} -> len = $len, max = $max');
+      // int max = adapter.max(h);
+      //
+      var isAnHour = element.isAnHour(adapter);
+      var widthPixels = element.widthPixels(adapter, width);
+      var heightPixels = element.heightPixels(itemHeight);
+      print('--->>> width = $width, widthPixels = $widthPixels, heightPixels = $heightPixels');
+      // debugPrint('element = ${element.toJson()} -> len = $len, max = $max');
       var index = element.index;
       var random = Random();
       var r = random.nextInt(256);
@@ -58,15 +63,15 @@ class ScaleEventView extends StatelessWidget {
             child: Text(element.title, overflow: TextOverflow.ellipsis),
             color: Color.fromRGBO(r, g, b, opacity),
             padding: const EdgeInsets.only(left: 10),
-            width: element.widthPixels(adapter, width),
-            height: element.heightPixels(itemHeight),
+            width: widthPixels,
+            height: heightPixels,
           ),
           onTap: () {
             var route = MaterialPageRoute(builder: (_) => Show(element.title));
             Navigator.push(context, route);
           },
         ),
-        left: width / len * index,
+        left: isAnHour ? widthPixels * index : width / len * index,
         top: itemHeight / 2 + (h + m / 60) * itemHeight + itemHeight / 2,
       ));
     });

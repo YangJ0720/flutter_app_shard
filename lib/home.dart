@@ -39,6 +39,8 @@ class _HomeState extends State<Home> {
       //
       ScaleAdapter adapter = ScaleAdapter(_itemHeight);
       adapter.initialize();
+      //
+      adapter.add(ScaleWrap('23:00', DateTime(2022, 1, 1, 23, 00), DateTime(2022, 1, 2, 00, 00)));
       // adapter.add(ScaleWrap('起床', DateTime(2022, 8, 30, 6), null));
       // //
       // adapter.add(ScaleWrap(
@@ -85,24 +87,55 @@ class _HomeState extends State<Home> {
       //
       // adapter.add(ScaleWrap('去睡觉1', DateTime(2022, 8, 30, 23), null));
       //
-      adapter.add(ScaleWrap('0800', DateTime(2022, 1, 1, 08, 00), null));
-      adapter.add(ScaleWrap('1000', DateTime(2022, 1, 1, 10, 00), DateTime(2022, 1, 1, 16, 00)));
-      adapter.add(ScaleWrap('1030', DateTime(2022, 1, 1, 10, 30), null));
-      adapter.add(ScaleWrap('1040', DateTime(2022, 1, 1, 10, 40), DateTime(2022, 1, 1, 16, 40)));
-      adapter.add(ScaleWrap('1100', DateTime(2022, 1, 1, 11, 00), null));
-      adapter.add(ScaleWrap('1100', DateTime(2022, 1, 1, 11, 00), null));
-      adapter.add(ScaleWrap('1105', DateTime(2022, 1, 1, 11, 05), null));
-      adapter.add(ScaleWrap('1150', DateTime(2022, 1, 1, 11, 50), null));
-      adapter.add(ScaleWrap('1200', DateTime(2022, 1, 1, 12, 00), null));
-      adapter.add(ScaleWrap('1200', DateTime(2022, 1, 1, 12, 00), DateTime(2022, 1, 1, 16, 50)));
-      adapter.add(ScaleWrap('1400', DateTime(2022, 1, 1, 14, 00), null));
-      // adapter.add(ScaleWrap('18:00', DateTime(2022, 8, 30, 18), DateTime(2022, 8, 30, 19)));
-      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18), DateTime(2022, 8, 30, 19)));
-      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 1), DateTime(2022, 8, 30, 20, 1)));
-      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 2), DateTime(2022, 8, 30, 20, 2)));
-      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 3), DateTime(2022, 8, 30, 20, 3)));
-      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 10), DateTime(2022, 8, 30, 20, 10)));
-      // adapter.add(ScaleWrap('6', DateTime(2022, 8, 30, 18, 15), DateTime(2022, 8, 30, 20, 15)));
+      // adapter.add(ScaleWrap('0700', DateTime(2022, 1, 1, 07, 00), DateTime(2022, 1, 1, 12, 00)));
+      // adapter.add(ScaleWrap('0800', DateTime(2022, 1, 1, 08, 00), null));
+      // adapter.add(ScaleWrap('0800', DateTime(2022, 1, 1, 08, 00), null));
+      // adapter.add(ScaleWrap('0800', DateTime(2022, 1, 1, 08, 00), null));
+      // adapter.add(ScaleWrap('0810', DateTime(2022, 1, 1, 08, 10), DateTime(2022, 1, 1, 09, 10)));
+      // adapter.add(ScaleWrap('0820', DateTime(2022, 1, 1, 08, 20), null));
+      // adapter.add(ScaleWrap('0830', DateTime(2022, 1, 1, 08, 30), null));
+      // adapter.add(ScaleWrap('0840', DateTime(2022, 1, 1, 08, 40), null));
+      // adapter.add(ScaleWrap('0900', DateTime(2022, 1, 1, 09, 00), null));
+      // adapter.add(ScaleWrap('0900', DateTime(2022, 1, 1, 09, 00), null));
+      // adapter.add(ScaleWrap('0900', DateTime(2022, 1, 1, 09, 00), null));
+      // adapter.add(ScaleWrap('0900', DateTime(2022, 1, 1, 09, 00), null));
+
+      // adapter.add(ScaleWrap('1000', DateTime(2022, 1, 1, 10, 00), DateTime(2022, 1, 1, 16, 00)));
+      // adapter.add(ScaleWrap('1030', DateTime(2022, 1, 1, 10, 30), null));
+      // adapter.add(ScaleWrap('1040', DateTime(2022, 1, 1, 10, 40), DateTime(2022, 1, 1, 16, 40)));
+      // adapter.add(ScaleWrap('1100', DateTime(2022, 1, 1, 11, 00), null));
+      // adapter.add(ScaleWrap('1100', DateTime(2022, 1, 1, 11, 00), null));
+      // adapter.add(ScaleWrap('1105', DateTime(2022, 1, 1, 11, 05), null));
+      // adapter.add(ScaleWrap('1150', DateTime(2022, 1, 1, 11, 50), null));
+      // adapter.add(ScaleWrap('1200', DateTime(2022, 1, 1, 12, 00), null));
+      // adapter.add(ScaleWrap('1200', DateTime(2022, 1, 1, 12, 00), DateTime(2022, 1, 1, 16, 50)));
+      // adapter.add(ScaleWrap('1310', DateTime(2022, 1, 1, 13, 10), DateTime(2022, 1, 1, 14, 10)));
+      // adapter.add(ScaleWrap('1400', DateTime(2022, 1, 1, 14, 00), null));
+      // adapter.add(ScaleWrap('1800', DateTime(2022, 1, 1, 18, 00), DateTime(2022, 1, 1, 19, 00)));
+
+      //
+      // adapter.add(ScaleWrap('1400', DateTime(2022, 1, 1, 14, 00), DateTime(2022, 1, 1, 15, 00)));
+      // adapter.add(ScaleWrap('1500', DateTime(2022, 1, 1, 15, 00), DateTime(2022, 1, 1, 16, 00)));
+      // adapter.add(ScaleWrap('1410', DateTime(2022, 1, 1, 14, 10), null));
+      // adapter.add(ScaleWrap('1420', DateTime(2022, 1, 1, 14, 20), null));
+      // adapter.add(ScaleWrap('1600', DateTime(2022, 1, 1, 16, 00), DateTime(2022, 1, 1, 20, 00)));
+      // adapter.add(ScaleWrap('1600', DateTime(2022, 1, 1, 16, 00), null));
+      // adapter.add(ScaleWrap('1610', DateTime(2022, 1, 1, 16, 10), null));
+      // adapter.add(ScaleWrap('1620', DateTime(2022, 1, 1, 16, 20), null));
+      // adapter.add(ScaleWrap('2000', DateTime(2022, 1, 1, 20, 00), null));
+      // adapter.add(ScaleWrap('2010', DateTime(2022, 1, 1, 20, 10), null));
+      // adapter.add(ScaleWrap('1800', DateTime(2022, 1, 1, 18, 00), DateTime(2022, 1, 1, 19, 00)));
+      // adapter.add(ScaleWrap('1800', DateTime(2022, 1, 1, 18, 00), DateTime(2022, 1, 1, 19, 00)));
+      // adapter.add(ScaleWrap('1830', DateTime(2022, 1, 1, 18, 30), DateTime(2022, 1, 1, 19, 30)));
+      // adapter.add(ScaleWrap('1900', DateTime(2022, 1, 1, 19, 00), DateTime(2022, 1, 1, 20, 00)));
+      //
+      // adapter.add(ScaleWrap('2300', DateTime(2022, 1, 1, 23, 00), DateTime(2022, 1, 1, 00, 00)));
+      // adapter.add(ScaleWrap('2300', DateTime(2022, 1, 1, 23, 00), DateTime(2022, 1, 1, 00, 00)));
+      // adapter.add(ScaleWrap('2300', DateTime(2022, 1, 1, 23, 00), DateTime(2022, 1, 1, 00, 00)));
+      // adapter.add(ScaleWrap('2300', DateTime(2022, 1, 1, 23, 00), DateTime(2022, 1, 1, 00, 00)));
+      // adapter.add(ScaleWrap('2330', DateTime(2022, 1, 1, 23, 30), DateTime(2022, 1, 2, 00, 30)));
+      // adapter.add(ScaleWrap('2330', DateTime(2022, 1, 1, 23, 30), DateTime(2022, 1, 2, 00, 30)));
+      //
       _controller.add(adapter);
     });
   }

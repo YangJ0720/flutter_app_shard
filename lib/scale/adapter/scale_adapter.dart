@@ -18,7 +18,7 @@ class ScaleAdapter {
 
   void add(ScaleWrap scaleWrap) {
     DateTime sdt = scaleWrap.getSdt;
-    DateTime edt = scaleWrap.getEdt;
+    DateTime edt = scaleWrap.getEdt();
     //
     var sHour = sdt.hour;
     var eHour = edt.hour;
@@ -26,12 +26,22 @@ class ScaleAdapter {
     var value = _hashMap[sHour];
     if (value == null || value.isEmpty) {
       // 如果是第一个事件，就可以直接添加
-      if (sHour == eHour) {
+      if (sHour == eHour || scaleWrap.checkAnHour()) {
         _hashMap.forEach((key, value) {
           if (sHour == key) {
-            _hashMap[key] = [scaleWrap];
+            var v = _hashMap[key];
+            if (v == null) {
+              _hashMap[key] = [scaleWrap];
+            } else {
+              v.add(scaleWrap);
+            }
           } else {
-            _hashMap[key]?.add(null);
+            var v = _hashMap[key];
+            if (v == null) {
+              _hashMap[key] = [null];
+            } else {
+              v.add(null);
+            }
           }
         });
       } else {
@@ -54,7 +64,7 @@ class ScaleAdapter {
       return;
     }
     //
-    if (sHour == eHour) {
+    if (sHour == eHour || scaleWrap.checkAnHour()) {
       // 不是第一个事件，需要对这个时段的事件集合进行遍历，查看是否满足插入条件
       var index = value.indexWhere((element) => element == null);
       if (index >= 0) {
@@ -129,19 +139,6 @@ class ScaleAdapter {
       List<ScaleWrap?>? value = _hashMap[key];
       if (value == null) continue;
       var length = value.length;
-      if (max < length) {
-        max = length;
-      }
-    }
-    return max;
-  }
-
-  int max(int hour) {
-    int prevMax = _hashMap[hour - 1]?.length ?? 1;
-    int max = 1;
-    var values = _hashMap.values;
-    for (var element in values) {
-      var length = element.length;
       if (max < length) {
         max = length;
       }
