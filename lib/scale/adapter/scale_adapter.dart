@@ -146,6 +146,35 @@ class ScaleAdapter {
     return max;
   }
 
+  int checkedMultipleCount(int len, int s, int e, int index) {
+    if (index <= len - 1) {
+      var isNull = true;
+      var multiple = 0;
+      for (int i = s; i <= e; i++) {
+        var value = _hashMap[i] ?? [];
+        var length = value.length;
+        if (index <= length - 1) {
+          var item = value[index];
+          if (item == null) continue;
+          //
+          var sdt = item.getSdt;
+          var sHour = sdt.hour;
+          var edt = item.getEdt();
+          var eHour = edt.hour;
+          var next = checkedMultipleCount(len, sHour, eHour, index + 1);
+          if (multiple < next) {
+            multiple = next;
+          }
+          //
+          isNull = false;
+        }
+      }
+      return multiple + (isNull ? 0 : 1);
+    } else {
+      return 0;
+    }
+  }
+
   List<ScaleWrap> toList() => _list;
 
   LinkedHashMap<int, List<ScaleWrap?>> toMap() => _hashMap;

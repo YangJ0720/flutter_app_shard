@@ -41,15 +41,16 @@ class ScaleEventView extends StatelessWidget {
       var h = sdt.hour;
       var m = sdt.minute;
       var edt = element.getEdt();
+      var eHour = sdt.hour;
+      var eMinute = edt.minute;
       var len = adapter.checked(sdt, edt);
-      // int max = adapter.max(h);
-      //
-      var isAnHour = element.isAnHour(adapter);
       var widthPixels = element.widthPixels(adapter, width);
       var heightPixels = element.heightPixels(itemHeight);
-      print('--->>> width = $width, widthPixels = $widthPixels, heightPixels = $heightPixels');
+      //
       // debugPrint('element = ${element.toJson()} -> len = $len, max = $max');
       var index = element.index;
+      // debugPrint('--->>> title = ${element.title}, widthPixels = $widthPixels, heightPixels = $heightPixels');
+      //
       var random = Random();
       var r = random.nextInt(256);
       var g = random.nextInt(256);
@@ -71,7 +72,7 @@ class ScaleEventView extends StatelessWidget {
             Navigator.push(context, route);
           },
         ),
-        left: isAnHour ? widthPixels * index : width / len * index,
+        left: element.leftPixels(adapter, width),
         top: itemHeight / 2 + (h + m / 60) * itemHeight + itemHeight / 2,
       ));
     });

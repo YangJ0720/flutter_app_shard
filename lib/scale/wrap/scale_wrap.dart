@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shard/scale/adapter/scale_adapter.dart';
 
 class ScaleWrap {
@@ -5,8 +6,9 @@ class ScaleWrap {
   DateTime sdt;
   DateTime? edt;
   int index;
+  double width;
 
-  ScaleWrap(this.title, this.sdt, this.edt, {this.index = 0});
+  ScaleWrap(this.title, this.sdt, this.edt, {this.index = 0, this.width = 0});
 
   DateTime get getSdt => sdt;
 
@@ -36,23 +38,6 @@ class ScaleWrap {
     return sHour == dateTime.hour && eMinute == 0;
   }
 
-  bool isAnHour(ScaleAdapter adapter) {
-    var map = adapter.toMap();
-    var key = sdt.hour;
-    var value = map[key] ?? [];
-    var len = value.length;
-    var isAnHour = true;
-    for (int i = 0; i < len; i++) {
-      var item = value[i];
-      if (item == null) continue;
-      if (item.getEdt().difference(item.getSdt).inMinutes > 60) {
-        isAnHour = false;
-        break;
-      }
-    }
-    return isAnHour;
-  }
-
   double widthPixels(ScaleAdapter adapter, double width) {
     var map = adapter.toMap();
     var key = sdt.hour;
@@ -64,15 +49,14 @@ class ScaleWrap {
     // 判断这个时段的空隙数量
     var isNullCount = 0;
     //
-    var isAfterNullCount = 0;
+    int diff = adapter.checkedMultipleCount(value.length, getSdt.hour, getEdt().hour, index);
+    debugPrint('--->>> title = $title, index = $index, diff = $diff');
+    var isMultipleHourCount = adapter.checkedMultipleCount(value.length, getSdt.hour, getEdt().hour, 0);
     var len = value.length;
     for (int i = 0; i < len; i++) {
       var item = value[i];
       if (item == null) {
         isNullCount++;
-        if (index < i) {
-          isAfterNullCount++;
-        }
       } else {
         var sdt = item.getSdt;
         var sHour = sdt.hour;
@@ -89,34 +73,26 @@ class ScaleWrap {
         }
       }
     }
+    //
+    if (diff + index == len) {
+      var w = width / len;
+      this.width = w;
+      return w;
+    } else {
+      var w = width / len + width * ((len - diff - index) / len / (diff + index - 1));
+      this.width = w;
+      return w;
+    }
+    //
     // 如果这个事件是非跨时段事件，并且这个事件之后存在空隙，那么这个事件将占满剩余的宽度
     if (isAnHour) {
       // 如果这个时段只有一个事件，并且属于非跨时段事件，那么这个事件需要占满一行
       if (len - 1 == isNullCount) return width;
       // 如果这个时段的所有事件都是非跨时段事件，那么这些事件将平分一整行的宽度
       return width / isAnHourCount;
+    } else {
+      return width / isMultipleHourCount;
     }
-    // else if (isAfterNullCount > 1 && getEdt().difference(getSdt).inMinutes <= 60 && len - 1 == index + isAfterNullCount) {
-    //   // 如果这个事件是该时段最后一个非跨时段事件，并且这个事件之后存在空隙，那么这个事件将占满剩余的宽度
-    //   return width / len * (isAfterNullCount + 1);
-    // }
-    else if (isAfterNullCount > 0 && len - 1 == index + isAfterNullCount) {
-      // 如果这个事件是该时段最后一个事件，并且这个事件之后存在空隙，那么这个事件将占满剩余的宽度
-      var sHour = sdt.hour;
-      var edt = getEdt();
-      var eHour = edt.hour;
-      var eMinute = edt.minute;
-      var dateTime = edt.add(const Duration(hours: -1));
-      if (sHour == eHour || (sHour == dateTime.hour && eMinute == 0)) {
-        // 非跨时段事件数量自增
-        return width / len * (isAfterNullCount + 1);
-      } else {
-        // 发现有跨时段事件
-        
-      }
-    }
-    //
-    return width / len;
   }
 
   double heightPixels(double itemHeight) {
@@ -126,6 +102,24 @@ class ScaleWrap {
     var sHour = s.hour + s.minute / 60;
     var eHour = e.hour + e.minute / 60;
     return itemHeight * (eHour - sHour);
+  }
+
+  double leftPixels(ScaleAdapter adapter, double width) {
+    var map = adapter.toMap();
+    var key = sdt.hour;
+    var value = map[key] ?? [];
+    var len = value.length;
+    int diff = adapter.checkedMultipleCount(len, getSdt.hour, getEdt().hour, index);
+    //
+    double left;
+    if (diff + index == len) {
+      left = width / len * index;
+    } else {
+      width / len / (len - diff - index);
+      // print('--->>> title = $title, v = $v');
+      left = width / len * index;
+    }
+    return left;
   }
 
   String toJson() {
